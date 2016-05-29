@@ -13,7 +13,7 @@
 int cont = 0; //0 -- без опции "-", 1 -- с опцией "-"
 
 int parse_colums(char * s, int * numbers, int n){
-    int i = 0, d = 0;
+    int i = 0, d = 0, k;
     char * tmp = s;
     for(i=0; s[i] != '\0' && i < n; ++i){
         if(isdigit(s[i])){
@@ -33,6 +33,15 @@ int parse_colums(char * s, int * numbers, int n){
     }
     return 0;
 }
+int include_arr(int * numbers, int n, int size){
+    int i = 0;
+    for(i = 0; i < size; i++){
+        if(numbers[i] != 0 && numbers[i] == n){
+            return 1;
+        }
+    }
+    return 0;
+}
 
 int parse_string(char * s, char delim, int * numbers, int length){
     int i = 0, d = 1, k = 0, s_l, tmp_s = 0;
@@ -41,16 +50,16 @@ int parse_string(char * s, char delim, int * numbers, int length){
     // printf("Len %d\n", length);
     for(i = 0; s[i] != '\0' && i < length; i++){
         if(s[i] == delim){
-            if(numbers[k] == d){
-                strncat(tmp, s+tmp_s, i-tmp_s+1);
+            if((include_arr(numbers, d, 1024)) == 1){
+                strncat(tmp, s+tmp_s, i-tmp_s);
                 s_l = strlen(tmp);
                 // printf("Stlen %d\n tmp_s = %d\n d = %d\n", s_l, tmp_s, d);
                 // tmp[s_l] = '\0';
                 // printf("%s\n", tmp);
                 k++;
             }
+            tmp_s = i;
             d++;
-            tmp_s = i+1;
         }
         if(numbers[k] == 0 && cont == 1){
             strncat(tmp, s+tmp_s, (strlen(s)-tmp_s));
@@ -58,12 +67,14 @@ int parse_string(char * s, char delim, int * numbers, int length){
         }
         if(s[i+1] == '\0'){
             if(numbers[k] == d){
+                // strncat(tmp, s+tmp_s, i-tmp_s+2);
                 strncat(tmp, s+tmp_s, i-tmp_s+1);
                 s_l = strlen(tmp);
                 // printf("Stlen %d\n tmp_s = %d\n d = %d\n", s_l, tmp_s, d);
                 // tmp[s_l] = '\0';
                 // printf("%s\n", tmp);
                 k++;
+                break;
             }
         }
     }
@@ -73,6 +84,7 @@ int parse_string(char * s, char delim, int * numbers, int length){
 
 int main(int argc, char ** argv){
     int numbers[1024];
+    memset(numbers, 0, sizeof(numbers));
     int flag;
     char delim = '\t';
     if(argc < 2){
@@ -117,11 +129,11 @@ int main(int argc, char ** argv){
         printf("Error: parse_columns\n");
         return -1;
     }
-    for(int i = 0; i < 5; i++){
-        printf("%d ", numbers[i]);
-    }
-    printf("\n%d\n", cont);
-    printf("%c\n", delim);
+    // int i = 0;
+    // for(i = 0; i < 1024; i++){
+    //     printf("%d ",numbers[i]);
+    // }
+    // printf("\n");
     char input[1024];
     while(fgets(input, 1024, stdin) != NULL){
         parse_string(input, delim, numbers, strlen(input));
