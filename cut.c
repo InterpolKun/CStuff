@@ -66,7 +66,7 @@ int parse_string(char * s, char delim, int * numbers, int length){
             break;
         }
         if(s[i+1] == '\0'){
-            if(numbers[k] == d){
+            if((include_arr(numbers, d, 1024)) == 1){
                 // strncat(tmp, s+tmp_s, i-tmp_s+2);
                 strncat(tmp, s+tmp_s, i-tmp_s+1);
                 s_l = strlen(tmp);
@@ -78,7 +78,7 @@ int parse_string(char * s, char delim, int * numbers, int length){
             }
         }
     }
-    printf("%s\n", tmp);
+    printf("%s", tmp);
     return 0;
 }
 
@@ -100,18 +100,23 @@ int main(int argc, char ** argv){
     // }else{
     //     return 0;
     // }
+    if(argc == 4 || argc == 2){
+        printf("Each flag should have an argument\n");
+        return -1;
+    }
 
     if(argv[1][1] == 'f'){
         flag = parse_colums(argv[2], numbers, strlen(argv[2]));
-    }
-    if(argv[1][1] == 'd'){
+    }else if (argv[1][1] == 'd'){
         if(strlen(argv[2])>1){
             printf("Delim should be 1 letter long!\n");
             return -1;
         }
         delim = argv[2][0];
+    }else{
+        printf("Args should be -d OR -f\n");
+        return -1;
     }
-
     if(argc>3){
         if(argv[3][1] == 'd'){
             if(strlen(argv[4])>1){
