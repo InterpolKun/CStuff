@@ -21,7 +21,7 @@ int parse_colums(char * s, int * numbers, int n){
             numbers[d] = atoi(tmp);
             if((s[i+1]) != '\0' && (s[i+1]) == '-'){
                 cont = 1;
-                return 0;
+                i++;
             }
             d++;
         }else if(s[i] == ','){
@@ -62,13 +62,13 @@ int parse_string(char * s, char delim, int * numbers, int length){
             d++;
         }
         if(numbers[k] == 0 && cont == 1){
-            strncat(tmp, s+tmp_s, (strlen(s)-tmp_s));
+            strncat(tmp, s+tmp_s, (strlen(s)-tmp_s-1));
             break;
         }
         if(s[i+1] == '\0'){
             if((include_arr(numbers, d, 1024)) == 1){
                 // strncat(tmp, s+tmp_s, i-tmp_s+2);
-                strncat(tmp, s+tmp_s, i-tmp_s+1);
+                strncat(tmp, s+tmp_s, i-tmp_s);
                 s_l = strlen(tmp);
                 // printf("Stlen %d\n tmp_s = %d\n d = %d\n", s_l, tmp_s, d);
                 // tmp[s_l] = '\0';
@@ -78,7 +78,9 @@ int parse_string(char * s, char delim, int * numbers, int length){
             }
         }
     }
-    printf("%s", tmp);
+
+    printf("%s\n", tmp);
+
     return 0;
 }
 
