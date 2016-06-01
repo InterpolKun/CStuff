@@ -51,7 +51,7 @@ int parse_string(char * s, char delim, int * numbers, int length){
     for(i = 0; s[i] != '\0' && i < length; i++){
         if(s[i] == delim){
             if((include_arr(numbers, d, 1024)) == 1){
-                strncat(tmp, s+tmp_s, i-tmp_s);
+                strncat(tmp, s+tmp_s+1, i-tmp_s-1);
                 s_l = strlen(tmp);
                 // printf("Stlen %d\n tmp_s = %d\n d = %d\n", s_l, tmp_s, d);
                 // tmp[s_l] = '\0';
@@ -68,7 +68,7 @@ int parse_string(char * s, char delim, int * numbers, int length){
         if(s[i+1] == '\0'){
             if((include_arr(numbers, d, 1024)) == 1){
                 // strncat(tmp, s+tmp_s, i-tmp_s+2);
-                strncat(tmp, s+tmp_s, i-tmp_s);
+                strncat(tmp, s+tmp_s+1, i-tmp_s-1);
                 s_l = strlen(tmp);
                 // printf("Stlen %d\n tmp_s = %d\n d = %d\n", s_l, tmp_s, d);
                 // tmp[s_l] = '\0';
@@ -147,3 +147,4 @@ int main(int argc, char ** argv){
     }
     return 0;
 }
+
